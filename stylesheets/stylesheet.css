@@ -657,7 +657,7 @@ form {
 #main-content h3:before {
   padding-right: 0.3em;
   margin-left: -2em;
-  content: "///";
+  content: "//";
   color: #9ddcff;
 }
 
@@ -728,12 +728,29 @@ ul {
   list-style-position: inside;
   list-style: disc;
   padding-left: 20px;
+  list-style-type: none;
+  font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
 }
 
 ol {
   list-style-position: inside;
   list-style: decimal;
   padding-left: 3px;
+}
+
+li {
+  font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
+}
+
+li:before {
+  padding-right: 0.3em;
+  margin-left: -2em;
+  /*padding-right: 0.3em;*/
+  /*margin-left: -3.7em;*/
+  content: "/";
+  color: #9ddcff;
+}
+
 }
 
 dl dd {
