@@ -1,0 +1,16 @@
+#!/bin/bash
+set -euo pipefail
+
+declare -A srcDirs
+gitRoot=''/home/lars/git
+srcDirs[opencsv]='kahalemakai/opencsv/core/src/main/resources/schemas'
+
+project="$1"
+version="$2"
+
+dest="${gitRoot}/kahalemakai/kaHaleMaKai.github.io/schemas/${project}/${version}"
+mkdir -p "$dest"
+cp "${gitRoot}/${srcDirs[${project}]}/"*.xsd "$dest/."
+
+# vim: set ft=sh
+# vim: ft=sh
