@@ -3,7 +3,7 @@ set -euo pipefail
 
 declare -A srcDirs
 gitRoot=''/home/lars/git
-srcDirs[opencsv/core]='kahalemakai/opencsv/core/src/main/resources/schemas'
+srcDirs[opencsv]='kahalemakai/opencsv/core/src/main/resources/schemas'
 srcDirs[opencsv/plugins]='kahalemakai/opencsv/plugins/src/main/resources/schemas'
 
 project="$1"
