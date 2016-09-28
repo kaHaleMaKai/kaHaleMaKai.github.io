@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2016, Lars Winderling
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://github.com/kaHaleMaKai/opencsv/bean"
+           xmlns:bean="http://github.com/kaHaleMaKai/opencsv/bean"
+           elementFormDefault="qualified">
+
+    <!--type definitions-->
+
+    <xs:complexType name="Processor">
+        <xs:attributeGroup ref="bean:ProcessorAttributes" />
+    </xs:complexType>
+    
+    <xs:complexType name="EnumDecoder">
+        <xs:complexContent>
+            <xs:extension base="bean:Processor">
+                <xs:sequence maxOccurs="unbounded">
+                    <xs:element name="map" type="bean:EnumMapType" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="EnumMapType">
+        <xs:attributeGroup ref="bean:EnumMapAttributes" />
+    </xs:complexType>
+
+    <xs:complexType name="Field">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="decoder"       type="bean:Processor"   minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="enum"          type="bean:EnumDecoder" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="postProcessor" type="bean:Processor"   minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="postValidator" type="bean:Processor"   minOccurs="0" maxOccurs="unbounded" />
+        </xs:choice>
+
+        <xs:attributeGroup ref="bean:FieldAttributes" />
+    </xs:complexType>
+
+    <xs:simpleType name="NullFallsThrough">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="postprocessor" />
+            <xs:enumeration value="postvalidator" />
+            <xs:enumeration value="both" />
+            <xs:enumeration value="none" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="ColumnDataSource">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="column" />
+            <xs:enumeration value="value" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="ColumnType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="int" />
+            <xs:enumeration value="short" />
+            <xs:enumeration value="long" />
+            <xs:enumeration value="boolean" />
+            <xs:enumeration value="float" />
+            <xs:enumeration value="double" />
+            <xs:enumeration value="double" />
+            <xs:enumeration value="String" />
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <!--attribute definitions-->
+
+    <xs:attributeGroup name="EnumMapAttributes">
+        <xs:attribute name="key" type="xs:string" use="required" />
+        <xs:attribute name="value" type="xs:string" use="required" />
+    </xs:attributeGroup>
+
+    <xs:attributeGroup name="BeanAttributes">
+        <xs:attribute name="class" use="required" />
+        <xs:attribute name="nullString" use="optional" />
+        <xs:attribute name="trim" type="xs:boolean" use="optional" />
+    </xs:attributeGroup>
+
+    <xs:attributeGroup name="FieldAttributes">
+        <xs:attribute name="name" type="xs:string" use="required" />
+        <xs:attribute name="ref" type="bean:ColumnDataSource" use="optional" />
+        <xs:attribute name="refData" type="xs:string" use="optional" />
+        <xs:attribute name="type" type="bean:ColumnType" use="optional" default="String" />
+        <xs:attribute name="nullFallsThrough" type="bean:NullFallsThrough" />
+        <xs:attribute name="nullString" type="xs:string" use="optional" />
+        <xs:attribute name="nullable" type="xs:boolean" use="optional" />
+        <xs:attribute name="trim" type="xs:boolean" use="optional" />
+    </xs:attributeGroup>
+
+    <xs:attributeGroup name="ProcessorAttributes">
+        <xs:attribute name="type" use="required" />
+    </xs:attributeGroup>
+
+    <!--element definitions-->
+
+    <xs:element name="config">
+        <xs:complexType>
+
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="field" type="bean:Field" />
+            </xs:sequence>
+
+            <xs:attributeGroup ref="bean:BeanAttributes" />
+
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>
